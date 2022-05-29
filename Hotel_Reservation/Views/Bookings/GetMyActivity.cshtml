@@ -1,0 +1,81 @@
+﻿@model List<Booking>
+
+@{
+    ViewData["Title"] = "Reservation";
+    Layout = "_MyLayout";
+    var x = 0;
+    var y = 0;
+}
+
+  <div class="contact main-font-family text-center">
+            <div class="container">
+                <br />
+                <br />
+                <br />
+                <div class="row">
+                    <div class="col-6">
+                        <div class="contact-form">
+                            <form asp-action="Index" asp-controller="Rooms">
+                                <div class="container">
+@foreach(var item in Model){
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+@*    <h5 class="card-title">@item.customer.UserName</h5>
+*@    <h6 class="card-subtitle mb-2 text-muted">@item.RoomType.Type</h6>
+    @if(item.Status==null) {
+<p style="color:yellow">Status:
+    
+        <span>Wait</span>
+    
+    </p>
+    } @if(item.Status==1) {
+<p style="color:green">Status:
+    
+        <span style="color:green">accept</span>
+        <h6 style="color:green">Room Number : @item.RoomId</h6>
+    
+        @{double l=  ( @item.To -@item.From).TotalDays;
+          double p=  @item.RoomType.price;
+             double total=l*p;}
+               <h6 style="color:green">Cost : @total </h6>
+
+
+    
+    </p>
+    } @if(item.Status==0) {
+<p style="color:red">Status:
+    
+        <span>Refuse</span>
+    
+    </p>
+    }
+  </div>
+</div>
+}
+</div>
+                            </form>
+
+                            <div >
+                                <a class="small text-light" asp-action="index" asp-controller="Home">Back to Home Page</a>
+                            </div>
+                            
+                            
+
+                        </div>
+                    </div>
+                 
+                    <div class="col-6">
+                        <h2 class="text-right">Reservations</h2>
+                        <img src="/imgs/shape.png">
+                        
+                    </div>
+                </div>
+            </div>
+            <div></div>
+        </div>
+      
+        
+   @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+   }

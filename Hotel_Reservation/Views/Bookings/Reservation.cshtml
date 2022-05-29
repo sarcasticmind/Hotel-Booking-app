@@ -1,0 +1,85 @@
+﻿@model List<Booking>
+
+@{
+    ViewData["Title"] = "Reservation";
+    Layout = "_MyLayout";
+}
+<div class="contact main-font-family text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <div class="contact-form">
+                    @foreach (var item in Model)
+                    {
+                        <form asp-action="accept" asp-controller="bookings" asp-route-id="@item.Id">
+                            @{
+                                SelectList rooms = new SelectList(item.RoomType.Rooms.Where(n => n.IsReserved == false), "Id", "Id");
+                            }
+                            <div class="container">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">@item.customer.UserName</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">@item.RoomType.Type</h6>
+                                        <div class="form-group">
+                                            <label asp-for="@item.RoomId" class="control-label"></label>
+
+                                            <select name="RoomId" class="form-control" asp-items=rooms>
+                                                <option value="0" selected> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ----select Room----</option>
+
+
+                                            </select>
+
+                                        </div>
+                                        <button type="submit" id="accept" class="card-link">Accept</button>
+                                        <button type="submit" id="Refuse" asp-action="Refuse" asp-controller="bookings" asp-route-id="@item.Id" class="card-link">Refuse</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    }
+                    <div>
+                        <a class="small text-light" asp-action="index" asp-controller="Home">Back to Home Page</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <h2 class="text-right">Reservations</h2>
+                <img src="/imgs/shape.png">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+    }
+
+
+
+
+
+@*<script>
+    function getData(){
+    var element = document.getElementById("accept");
+    var element1 = document.getElementById("refuse");
+
+    var id=$("#id").val();
+    $.ajax(
+    {
+    url: "/Bookings/Accept",//?stdid="+id,
+    data:{"id":id},
+    success: function(result){
+
+    // alert(result);
+    //document.getElementById("div1").innerHTML=result;
+    //dom
+    }
+    }
+    );
+    }
+
+    </script>*@
